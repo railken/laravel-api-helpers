@@ -64,10 +64,19 @@ class Filter extends BaseFilter
     public function buildQuery($query, $node, $last_logic_operator = 'and')
     {
 
+        if (is_array($node)) {
+            foreach($node as $expression)
+                $this->build($query, $expression, $last_logic_operator);
+
+            return;
+        }   
+
         $values = $node->getValue();
         $operator = $node->getOperator();
 
         $key = $node->getKey() ? $node->getKey() : null;
+
+
 
         $sub_where = ((object)['and' => 'where', 'or' => 'orWhere'])->$last_logic_operator;
 
