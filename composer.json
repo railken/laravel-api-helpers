@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.0.0",
         "railken/bag": "^1.2",
-        "illuminate/support": "^5.5",
+        "illuminate/support": "^5.4",
         "railken/api-helpers": "^1.0"
     },
     "require-dev": {
