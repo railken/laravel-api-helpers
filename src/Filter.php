@@ -66,7 +66,7 @@ class Filter extends BaseFilter
 
         if (is_array($node)) {
             foreach($node as $expression)
-                $this->build($query, $expression, $last_logic_operator);
+                $this->buildQuery($query, $expression, $last_logic_operator);
 
             return;
         }   
