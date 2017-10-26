@@ -3,6 +3,7 @@
 namespace Railken\Laravel\ApiHelpers;
 
 use Railken\ApiHelpers\Filter as BaseFilter;
+use Illuminate\Support\Facades\DB;
 
 class Filter extends BaseFilter
 {   
@@ -21,8 +22,9 @@ class Filter extends BaseFilter
      */
     public function setKeys($keys)
     {
-        $this->keys = $keys;
 
+        $this->keys = $keys;
+        
         return $this; 
     }
 
@@ -92,6 +94,9 @@ class Filter extends BaseFilter
 
         if (!in_array($key, $this->keys))
             return;
+
+        $keys = explode(".", $key);
+        $key = DB::raw("`".implode(".", array_slice($keys, 0, -1))."`.".$keys[count($keys)-1]);
 
         $operator == "in"           && $query->{"{$sub_where}In"}($key, $values);
 
