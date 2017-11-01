@@ -14,6 +14,13 @@ class Filter extends BaseFilter
     protected $keys;
 
     /**
+     * Closure to parse key
+     *
+     * @var Closure
+     */
+    protected $parse_key;
+
+    /**
      * Set keys
      *
      * @param array $keys
@@ -22,9 +29,8 @@ class Filter extends BaseFilter
      */
     public function setKeys($keys)
     {
-
         $this->keys = $keys;
-        
+
         return $this; 
     }
 
@@ -38,7 +44,36 @@ class Filter extends BaseFilter
         return $this->keys;
     }
 
+    /**
+     * Set parse key
+     *
+     * @param Closure $parse_key
+     *
+     * @return $this
+     */
+    public function setParseKey($parse_key)
+    {
+        $this->parse_key = $parse_key;
 
+        return $this;
+    }
+
+    /**
+     * Parse given key before sending to query
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function parseKey($key){
+        $f = $this->parse_key;
+
+        if ($f && is_callable($f)) { 
+            return $f($key);
+        }
+
+        return $key;
+    }
     /**
      * Filter query with where 
      *
@@ -94,9 +129,9 @@ class Filter extends BaseFilter
 
         if (!in_array($key, $this->keys))
             return;
+        
+        $key = $this->parseKey($key);
 
-        $keys = explode(".", $key);
-        $key = DB::raw("`".implode(".", array_slice($keys, 0, -1))."`.".$keys[count($keys)-1]);
 
         $operator == "in"           && $query->{"{$sub_where}In"}($key, $values);
 
