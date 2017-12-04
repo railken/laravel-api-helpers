@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Railken\Laravel\ApiHelpers\Filter;
 use Railken\Laravel\ApiHelpers\Sorter;
 use Railken\Laravel\ApiHelpers\Paginator;
-use Railken\Laravel\ApiHelpers\Tests\User;
+use Railken\Laravel\ApiHelpers\Tests\Foo;
 
 
 class FilterTest extends \Orchestra\Testbench\TestCase
@@ -36,6 +36,27 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         parent::setUp();
     }
 
+
+    /**
+     * Retrieve a new instance of query
+     *
+     * @param string $str_filter
+     *
+     * @return QueryBuilder
+     */
+    public function newQuery($str_filter)
+    {
+
+        $filter = new Filter();
+        $filter->setKeys(['x']);
+        $query = Foo::query();
+
+        echo $str_filter;
+        $filter->build($query, $str_filter);
+        return $query;
+    }
+    
+
     /**
      * @expectedException Railken\Laravel\ApiHelpers\Exceptions\FilterUndefinedKeyException
      */
@@ -43,14 +64,23 @@ class FilterTest extends \Orchestra\Testbench\TestCase
     {
        $filter = new Filter();
        $filter->setKeys(['x']);
-       $filter->build(User::where('id', 0), 'y eq 1');
+       $filter->build(Foo::query(), 'y eq 1');
     } 
 
-
-	public function testFilter()
+	public function testFilterEq()
 	{
-        $this->assertEquals(Filter::class, get_class(new Filter()));
+        $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x eq 1')->toSql());
 	}
+
+    public function testFilterGt()
+    {
+        $this->assertEquals('select * from `foo` where `x` > ?', $this->newQuery('x gt 1')->toSql());
+    }
+
+    public function testFilterGte()
+    {
+        $this->assertEquals('select * from `foo` where `x` >= ?', $this->newQuery('x gte 1')->toSql());
+    }
     public function testBasic()
     {   
         $this->assertEquals(Sorter::class, get_class(new Sorter()));

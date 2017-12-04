@@ -126,7 +126,6 @@ class Filter extends BaseFilter
              $this->buildQuery($sub_query, $values, "and");
         });
 
-
         if (!in_array($key, $this->keys)) {
             throw new Exceptions\FilterUndefinedKeyException($key);
         }
@@ -134,16 +133,16 @@ class Filter extends BaseFilter
         $key = $this->parseKey($key);
 
 
-        $operator == "in"           && $query->{"{$sub_where}In"}($key, $values);
+        $operator === "in"           && $query->{"{$sub_where}In"}($key, $values);
 
-        $operator == "sw"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values);
-        $operator == "ew"           && $query->{"{$sub_where}"}($key, 'like', $values.'%');
-        $operator == "ct"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values.'%');
+        $operator === "sw"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values);
+        $operator === "ew"           && $query->{"{$sub_where}"}($key, 'like', $values.'%');
+        $operator === "ct"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values.'%');
 
-        $operator == "eq"           && $query->{"{$sub_where}"}($key, '=', $values);
-        $operator == "gt"           && $query->{"{$sub_where}"}($key, '>', $values);
-        $operator == "gte"          && $query->{"{$sub_where}"}($key, '>=', $values);
-        $operator == "lt"           && $query->{"{$sub_where}"}($key, '<', $values);
-        $operator == "lte"          && $query->{"{$sub_where}"}($key, '<', $values);
+        $operator === "eq"           && $query->{"{$sub_where}"}($key, '=', $values);
+        $operator === "gt"           && $query->{"{$sub_where}"}($key, '>', $values);
+        $operator === "gte"          && $query->{"{$sub_where}"}($key, '>=', $values);
+        $operator === "lt"           && $query->{"{$sub_where}"}($key, '<', $values);
+        $operator === "lte"          && $query->{"{$sub_where}"}($key, '<', $values);
     }
 }
