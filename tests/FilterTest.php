@@ -50,8 +50,6 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $filter = new Filter();
         $filter->setKeys(['x']);
         $query = Foo::query();
-
-        echo $str_filter;
         $filter->build($query, $str_filter);
         return $query;
     }
@@ -70,17 +68,34 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 	public function testFilterEq()
 	{
         $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x eq 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x = 1')->toSql());
 	}
 
     public function testFilterGt()
     {
         $this->assertEquals('select * from `foo` where `x` > ?', $this->newQuery('x gt 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` > ?', $this->newQuery('x > 1')->toSql());
     }
 
     public function testFilterGte()
     {
         $this->assertEquals('select * from `foo` where `x` >= ?', $this->newQuery('x gte 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` >= ?', $this->newQuery('x >= 1')->toSql());
     }
+
+
+    public function testFilterLt()
+    {
+        $this->assertEquals('select * from `foo` where `x` < ?', $this->newQuery('x lt 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` < ?', $this->newQuery('x < 1')->toSql());
+    }
+
+    public function testFilterLte()
+    {
+        $this->assertEquals('select * from `foo` where `x` <= ?', $this->newQuery('x lte 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` <= ?', $this->newQuery('x <= 1')->toSql());
+    }
+    
     public function testBasic()
     {   
         $this->assertEquals(Sorter::class, get_class(new Sorter()));
