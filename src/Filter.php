@@ -143,6 +143,6 @@ class Filter extends BaseFilter
         $operator === "gt"           && $query->{"{$sub_where}"}($key, '>', $values);
         $operator === "gte"          && $query->{"{$sub_where}"}($key, '>=', $values);
         $operator === "lt"           && $query->{"{$sub_where}"}($key, '<', $values);
-        $operator === "lte"          && $query->{"{$sub_where}"}($key, '<', $values);
+        $operator === "lte"          && $query->{"{$sub_where}"}($key, '<=', $values);
     }
 }
