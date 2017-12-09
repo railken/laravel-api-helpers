@@ -108,23 +108,26 @@ class Filter extends BaseFilter
             return;
         }   
 
-        $values = $node->getValue();
         $operator = $node->getOperator();
-
-        $key = $node->getKey() ? $node->getKey() : null;
-
 
 
         $sub_where = ((object)['and' => 'where', 'or' => 'orWhere'])->$last_logic_operator;
 
 
-        $operator == "or"           && $query->{"{$sub_where}"}(function($sub_query) use ($values) {
-            $this->buildQuery($sub_query, $values, "or");
+        $operator == "or"           && $query->{"{$sub_where}"}(function($sub_query) use ($node) {
+            $this->buildQuery($sub_query, $node->getChilds(), "or");
         });
 
-        $operator == "and"          && $query->{"{$sub_where}"}(function($sub_query) use ($values) {
-             $this->buildQuery($sub_query, $values, "and");
+        $operator == "and"          && $query->{"{$sub_where}"}(function($sub_query) use ($node) {
+             $this->buildQuery($sub_query, $node->getChilds(), "and");
         });
+
+        if ($operator === 'or' || $operator === 'and')
+            return;
+
+
+        $key = $node->getKey() ? $node->getKey() : null;
+        $values = $node->getValue();
 
         if (!in_array($key, $this->keys)) {
             throw new Exceptions\FilterUndefinedKeyException($key);

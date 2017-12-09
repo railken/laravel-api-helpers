@@ -53,7 +53,6 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $filter->build($query, $str_filter);
         return $query;
     }
-    
 
     /**
      * @expectedException Railken\Laravel\ApiHelpers\Exceptions\FilterUndefinedKeyException
@@ -83,7 +82,6 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` >= ?', $this->newQuery('x >= 1')->toSql());
     }
 
-
     public function testFilterLt()
     {
         $this->assertEquals('select * from `foo` where `x` < ?', $this->newQuery('x lt 1')->toSql());
@@ -95,7 +93,38 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` <= ?', $this->newQuery('x lte 1')->toSql());
         $this->assertEquals('select * from `foo` where `x` <= ?', $this->newQuery('x <= 1')->toSql());
     }
-    
+
+    public function testFilterCt()
+    {
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x ct 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x *= 1')->toSql());
+    }
+
+    public function testFilterSw()
+    {
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x sw 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x ^= 1')->toSql());
+    }
+
+    public function testFilterEw()
+    {
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x ew 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` like ?', $this->newQuery('x $= 1')->toSql());
+    }
+
+    public function testFilterIn()
+    {
+        $this->assertEquals('select * from `foo` where `x` in (?)', $this->newQuery('x in 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` in (?)', $this->newQuery('x =[] 1')->toSql());
+    }
+     
+
+    public function testFilterAnd()
+    {
+        $this->assertEquals('select * from `foo` where (`x` = ? and `x` = ?)', $this->newQuery('x = 1 and x = 2')->toSql());
+        $this->assertEquals('select * from `foo` where (`x` = ? and `x` = ?)', $this->newQuery('x = 1 && x = 2')->toSql());
+    }
+
     public function testBasic()
     {   
         $this->assertEquals(Sorter::class, get_class(new Sorter()));
