@@ -24,31 +24,24 @@ class BaseOperatorVisitor extends BaseVisitor
 			$bindings = [];
 	        $sql = [];
 
-	        if ($node->getChildByIndex(0) instanceof Nodes\KeyNode) {
-	            $sql[] = $this->parseKey($node->getChildByIndex(0)->getValue());
+	        $child0 = $node->getChildByIndex(0);
+	        $child1 = $node->getChildByIndex(1);
+
+	        if ($child0 instanceof Nodes\KeyNode && $child1 instanceof Nodes\KeyNode) {
+		        $context === Nodes\OrNode::class && $query->orWhereColumn($this->parseKey($child0->getValue()), $this->operator, $this->parseKey($child1->getValue()));
+		        $context === Nodes\AndNode::class && $query->whereColumn($this->parseKey($child0->getValue()), $this->operator, $this->parseKey($child1->getValue()));
 	        }
 
-	        if ($node->getChildByIndex(0) instanceof Nodes\ValueNode) {
-	            $bindings['p0'] = $this->parseValue($node->getChildByIndex(0)->getValue());
-	            $sql[] = ':p0';
+	        if ($child0 instanceof Nodes\ValueNode && $child1 instanceof Nodes\KeyNode) {
+		        $tmp = $child1;
+		        $child1 = $child0;
+		        $child0 = $tmp;
 	        }
 
-
-	       	$sql[] = $this->operator;
-
-
-	        if ($node->getChildByIndex(1) instanceof Nodes\KeyNode) {
-	            $sql[] = $this->parseKey($node->getChildByIndex(1)->getValue());
+	        if ($child0 instanceof Nodes\KeyNode && $child1 instanceof Nodes\ValueNode) {
+		        $context === Nodes\OrNode::class && $query->orWhere($this->parseKey($child0->getValue()), $this->operator, $this->parseValue($child1->getValue()));
+		        $context === Nodes\AndNode::class && $query->where($this->parseKey($child0->getValue()), $this->operator, $this->parseValue($child1->getValue()));
 	        }
-
-	        if ($node->getChildByIndex(1) instanceof Nodes\ValueNode) {
-	            $bindings['p1'] = $this->parseValue($node->getChildByIndex(1)->getValue());
-	            $sql[] = ':p1';
-	        }
-
-	        $context === Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
-	        $context === Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
-
     	}
 	}
 
