@@ -34,6 +34,7 @@ class Builder
             new Visitors\EwVisitor($this),
             new Visitors\AndVisitor($this),
             new Visitors\OrVisitor($this),
+            new Visitors\InVisitor($this),
         ];
 
 
