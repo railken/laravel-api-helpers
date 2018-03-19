@@ -32,6 +32,9 @@ class InVisitor extends BaseOperatorVisitor
 
         if ($node instanceof $this->node) {
         	
+        	$column = null;
+        	$values = null;
+
 	        if ($node->getChildByIndex(0) instanceof Nodes\KeyNode) {
 	            $column = $this->parseKey($node->getChildByIndex(0)->getValue());
 	        }
@@ -42,8 +45,10 @@ class InVisitor extends BaseOperatorVisitor
 	        	}, $node->getChildByIndex(1)->getChilds());
 	        }
 
-	        $context === Nodes\OrNode::class && $query->orWhereIn($column, $values);
-	        $context === Nodes\AndNode::class && $query->whereIn($column, $values);
+	        if ($column && $values) {
+		        $context === Nodes\OrNode::class && $query->orWhereIn($column, $values);
+		        $context === Nodes\AndNode::class && $query->whereIn($column, $values);
+	    	}
 
     	}
 	}
