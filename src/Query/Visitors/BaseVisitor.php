@@ -2,12 +2,10 @@
 
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Railken\Laravel\ApiHelpers\Query\Builder;
 
 class BaseVisitor
 {
-
     /**
      * @var \Railken\Laravel\ApiHelpers\Query\Builder
      */

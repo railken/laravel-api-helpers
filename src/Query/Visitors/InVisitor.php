@@ -7,14 +7,14 @@ use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 class InVisitor extends BaseOperatorVisitor
 {
     /**
-     * The node that will trigger the visitor
+     * The node that will trigger the visitor.
      *
      * @var string
      */
     protected $node = Nodes\InNode::class;
 
     /**
-     * The string operator for the query
+     * The string operator for the query.
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class InVisitor extends BaseOperatorVisitor
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      */
     public function visit($query, $node, string $context)
     {

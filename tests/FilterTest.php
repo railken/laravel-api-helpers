@@ -2,18 +2,17 @@
 
 namespace Railken\Laravel\ApiHelpers\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Railken\Laravel\ApiHelpers\Filter;
-use Railken\Laravel\ApiHelpers\Sorter;
 use Railken\Laravel\ApiHelpers\Paginator;
-use Railken\Laravel\ApiHelpers\Tests\Foo;
+use Railken\Laravel\ApiHelpers\Sorter;
 
 class FilterTest extends \Orchestra\Testbench\TestCase
 {
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
+     *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -32,14 +31,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      */
     public function setUp()
     {
-        $dotenv = new \Dotenv\Dotenv(__DIR__."/..", '.env');
+        $dotenv = new \Dotenv\Dotenv(__DIR__.'/..', '.env');
         $dotenv->load();
         parent::setUp();
     }
 
-
     /**
-     * Retrieve a new instance of query
+     * Retrieve a new instance of query.
      *
      * @param string $str_filter
      *
@@ -49,8 +47,9 @@ class FilterTest extends \Orchestra\Testbench\TestCase
     {
         $filter = new Filter();
         $filter->setKeys(['x']);
-        $query = (new Foo)->newQuery()->getQuery();
+        $query = (new Foo())->newQuery()->getQuery();
         $filter->build($query, $str_filter);
+
         return $query;
     }
 
@@ -61,7 +60,6 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $filter->setKeys(['x']);
         $filter->build((new Foo)->newQuery()->getQuery(), 'y eq 1');
     }*/
-
 
     public function testFilterEqColumns()
     {
@@ -128,14 +126,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` not in (?)', $this->newQuery('x not in (1)')->toSql());
         $this->assertEquals('select * from `foo` where `x` not in (?)', $this->newQuery('x !=[] (1)')->toSql());
     }
-     
-     
+
     public function testFilterAnd()
     {
         $this->assertEquals('select * from `foo` where (`x` = ? and `x` = ?)', $this->newQuery('x = 1 and x = 2')->toSql());
         $this->assertEquals('select * from `foo` where (`x` = ? and `x` = ?)', $this->newQuery('x = 1 && x = 2')->toSql());
     }
-     
+
     public function testFilterOr()
     {
         $this->assertEquals('select * from `foo` where (`x` = ? or `x` = ?)', $this->newQuery('x = 1 or x = 2')->toSql());

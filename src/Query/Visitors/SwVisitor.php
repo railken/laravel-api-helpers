@@ -7,21 +7,21 @@ use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 class SwVisitor extends BaseOperatorVisitor
 {
     /**
-     * The node that will trigger the visitor
+     * The node that will trigger the visitor.
      *
      * @var string
      */
     protected $node = Nodes\SwNode::class;
 
     /**
-     * The string operator for the query
+     * The string operator for the query.
      *
      * @var string
      */
     protected $operator = 'like';
 
     /**
-     * Parse the value before putting in the query
+     * Parse the value before putting in the query.
      *
      * @param string $value
      *
@@ -29,6 +29,6 @@ class SwVisitor extends BaseOperatorVisitor
      */
     public function parseValue($value)
     {
-        return "%".$value;
+        return '%'.$value;
     }
 }

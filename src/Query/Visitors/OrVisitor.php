@@ -2,9 +2,9 @@
 
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
+use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
 class OrVisitor extends LogicOperatorVisitor
 {
@@ -13,7 +13,7 @@ class OrVisitor extends LogicOperatorVisitor
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      */
     public function visit(Builder $query, NodeContract $node, string $context)
     {
@@ -23,7 +23,7 @@ class OrVisitor extends LogicOperatorVisitor
                     $this->getBuilder()->build($q, $child, Nodes\OrNode::class);
                 }
             };
-            
+
             $context === Nodes\OrNode::class && $query->orWhere($callback);
             $context === Nodes\AndNode::class && $query->where($callback);
         }

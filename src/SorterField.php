@@ -2,36 +2,31 @@
 
 namespace Railken\Laravel\ApiHelpers;
 
-use Railken\Laravel\ApiHelpers\Exceptions as Exceptions;
-use Railken\Bag;
-use Illuminate\Support\Collection;
-
 class SorterField
 {
-
     /**
-     * Name of field
+     * Name of field.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Name of field
+     * Name of field.
      *
      * @var string
      */
     protected $direction;
-    
+
     /**
-     * Construct
+     * Construct.
      */
     public function __construct()
     {
     }
 
     /**
-     * Set name of field
+     * Set name of field.
      *
      * @param string $name
      *
@@ -45,7 +40,7 @@ class SorterField
     }
 
     /**
-     * Get name of field
+     * Get name of field.
      *
      * @return string
      */
@@ -55,7 +50,7 @@ class SorterField
     }
 
     /**
-     * Set name of direction
+     * Set name of direction.
      *
      * @param string $direction
      *
@@ -71,7 +66,7 @@ class SorterField
     }
 
     /**
-     * Get direction
+     * Get direction.
      *
      * @return string
      */

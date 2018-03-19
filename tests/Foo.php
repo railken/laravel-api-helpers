@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Foo extends Model
 {
-
     /**
      * The table associated with the model.
      *
@@ -20,6 +19,6 @@ class Foo extends Model
      * @var array
      */
     protected $fillable = [
-        'x', 'y'
+        'x', 'y',
     ];
 }

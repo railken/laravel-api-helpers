@@ -3,13 +3,11 @@
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-use Illuminate\Database\Query\Builder;
-use Railken\SQ\Contracts\NodeContract;
 
 class NotNullVisitor extends BaseOperatorVisitor
 {
     /**
-     * The node that will trigger the visitor
+     * The node that will trigger the visitor.
      *
      * @var string
      */
@@ -20,7 +18,7 @@ class NotNullVisitor extends BaseOperatorVisitor
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      */
     public function visit($query, $node, string $context)
     {
