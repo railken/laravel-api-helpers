@@ -4,6 +4,8 @@ namespace Railken\Laravel\ApiHelpers;
 
 use Railken\ApiHelpers\Filter as BaseFilter;
 use Illuminate\Support\Facades\DB;
+use Railken\SQ\QueryParser;
+use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
 
 class Filter extends BaseFilter
 {   
@@ -89,6 +91,43 @@ class Filter extends BaseFilter
 
         return $node ? $this->buildQuery($query, $node) : null;
     }
+    
+    /**
+     * Convert the string query into an object (e.g.)
+     *
+     * @param string $query (e.g.) title eq 'something'
+     *
+     * @return Object
+     */
+    public function parse($query)
+    {
+        $parser = new QueryParser();
+        $parser->addResolvers([
+            new Resolvers\ValueResolver(),
+            new Resolvers\KeyResolver(),
+            new Resolvers\GroupingResolver(),
+            new Resolvers\SumFunctionResolver(),
+            new Resolvers\DateFormatFunctionResolver(),
+            new Resolvers\NotEqResolver(),
+            new Resolvers\EqResolver(),
+            new Resolvers\LteResolver(),
+            new Resolvers\LtResolver(),
+            new Resolvers\GteResolver(),
+            new Resolvers\GtResolver(),
+            new Resolvers\CtResolver(),
+            new Resolvers\SwResolver(),
+            new Resolvers\NotInResolver(),
+            new Resolvers\InResolver(),
+            new Resolvers\EwResolver(),
+            new Resolvers\NotNullResolver(),
+            new Resolvers\NullResolver(),
+            new Resolvers\AndResolver(),
+            new Resolvers\OrResolver(),
+        ]);
+
+        return $parser->parse($query);
+    }
+
 
     /**
      * Build query builder using node
@@ -98,9 +137,22 @@ class Filter extends BaseFilter
      *
      * @return void
      */
-    public function buildQuery($query, $node, $last_logic_operator = 'and')
+    public function buildQuery($query, $node)
     {
+        $visitors = [
+            new Visitors\EqVisitor(),
+            new Visitors\NotEqVisitor(),
+            new Visitors\LogicOperatorVisitor(function($query, $node) {
+                return $this->buildQuery($query, $node);
+            }),
+        ];
 
+       
+        foreach ($visitors as $visitor) {
+            $visitor->visit($query, $node);
+        }
+
+        /*
         if (is_array($node)) {
             foreach($node as $expression)
                 $this->buildQuery($query, $expression, $last_logic_operator);
@@ -134,18 +186,6 @@ class Filter extends BaseFilter
         }
         
         $key = $this->parseKey($key);
-
-
-        $operator === "in"           && $query->{"{$sub_where}In"}($key, $values);
-
-        $operator === "sw"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values);
-        $operator === "ew"           && $query->{"{$sub_where}"}($key, 'like', $values.'%');
-        $operator === "ct"           && $query->{"{$sub_where}"}($key, 'like', '%'.$values.'%');
-
-        $operator === "eq"           && $query->{"{$sub_where}"}($key, '=', $values);
-        $operator === "gt"           && $query->{"{$sub_where}"}($key, '>', $values);
-        $operator === "gte"          && $query->{"{$sub_where}"}($key, '>=', $values);
-        $operator === "lt"           && $query->{"{$sub_where}"}($key, '<', $values);
-        $operator === "lte"          && $query->{"{$sub_where}"}($key, '<=', $values);
+        */
     }
 }
