@@ -9,7 +9,7 @@ class BaseVisitor
 {	
 
 	/**
-	 * @var Railken\Laravel\ApiHelpers\Query\Builder
+	 * @var \Railken\Laravel\ApiHelpers\Query\Builder
 	 */
 	protected $builder;
 
@@ -26,7 +26,7 @@ class BaseVisitor
 	/**
 	 * Get builder.
 	 *
-	 * @return Railken\Laravel\ApiHelpers\Query\Builder
+	 * @return \Railken\Laravel\ApiHelpers\Query\Builder
 	 */
 	public function getBuilder()
 	{

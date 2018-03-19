@@ -7,8 +7,22 @@ use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
 use Illuminate\Support\Facades\DB;
 
-class BaseOperatorVisitor extends BaseVisitor
-{
+abstract class BaseOperatorVisitor extends BaseVisitor
+{	
+	/**
+	 * The node that will trigger the visitor
+	 *
+	 * @var string
+	 */
+	protected $node = Nodes\Node::class;
+
+	/**
+	 * The string operator for the query
+	 *
+	 * @var string
+	 */
+	protected $operator = '';
+
 	/**
 	 * Visit the node and update the query.
 	 *
