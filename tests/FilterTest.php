@@ -117,6 +117,13 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` in (?)', $this->newQuery('x in (1)')->toSql());
         $this->assertEquals('select * from `foo` where `x` in (?)', $this->newQuery('x =[] (1)')->toSql());
     }
+
+    public function testFilterNotIn()
+    {
+        $this->assertEquals('select * from `foo` where `x` not in (?)', $this->newQuery('x not in (1)')->toSql());
+        $this->assertEquals('select * from `foo` where `x` not in (?)', $this->newQuery('x !=[] (1)')->toSql());
+    }
+     
      
     public function testFilterAnd()
     {
