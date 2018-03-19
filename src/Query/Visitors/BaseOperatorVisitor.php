@@ -1,19 +1,14 @@
 <?php
 
-namespace Railken\Laravel\ApiHelpers\Visitors;
+namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
 
 
-class BaseOperatorVisitor
+class BaseOperatorVisitor extends BaseVisitor
 {
-
-	public function __construct($context)
-	{
-		$this->context = $context;
-	}
 
 	/**
 	 * Visit the node and update the query
@@ -25,6 +20,7 @@ class BaseOperatorVisitor
 	{	
 
         if ($node instanceof $this->node) {
+
 			$bindings = [];
 	        $sql = [];
 
@@ -49,8 +45,8 @@ class BaseOperatorVisitor
 	            $bindings['p1'] = $node->getChildByIndex(1)->getValue();
 	            $sql[] = ':p1';
 	        }
-	        $this->context == Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
-	        $this->context == Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
+	        $this->getBuilder()->getContext() == Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
+	        $this->getBuilder()->getContext() == Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
 
     	}
 	}

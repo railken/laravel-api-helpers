@@ -6,7 +6,6 @@ use Railken\ApiHelpers\Filter as BaseFilter;
 use Illuminate\Support\Facades\DB;
 use Railken\SQ\QueryParser;
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
 class Filter
 {   
@@ -87,10 +86,10 @@ class Filter
      */
     public function build($query, $filter)
     {   
-
-        $node = $this->parse($filter);
-
-        return $node ? $this->buildQuery($query, $node) : null;
+        $builder = new Query\Builder();
+            
+            
+        return $builder->build($query, $this->parse($filter));
     }
     
     /**
@@ -127,38 +126,5 @@ class Filter
         ]);
 
         return $parser->parse($query);
-    }
-
-
-    /**
-     * Build query builder using node
-     *
-     * @param QueryBuilder $query
-     * @param FilterNode $node
-     *
-     * @return void
-     */
-    public function buildQuery($query, $node, $context = Nodes\AndNode::class)
-    {
-        $visitors = [
-            new Visitors\EqVisitor($context),
-            new Visitors\NotEqVisitor($context),
-            new Visitors\AndVisitor($context, function($query, $node) {
-                return $this->buildQuery($query, $node, Nodes\AndNode::class);
-            }),
-            new Visitors\OrVisitor($context, function($query, $node) {
-                return $this->buildQuery($query, $node, Nodes\OrNode::class);
-            }),
-        ];
-
-       
-        foreach ($visitors as $visitor) {
-            $visitor->visit($query, $node);
-        }
-
-        /*if (!in_array($key, $this->keys)) {
-            throw new Exceptions\FilterUndefinedKeyException($key);
-        }*/
-        
     }
 }
