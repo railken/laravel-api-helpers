@@ -2,21 +2,18 @@
 
 namespace Railken\Laravel\ApiHelpers;
 
-use Railken\ApiHelpers\Filter as BaseFilter;
-use Illuminate\Support\Facades\DB;
-use Railken\SQ\QueryParser;
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
+use Railken\SQ\QueryParser;
 
 class Filter
 {
-
     /**
      * @var array
      */
     protected $keys;
 
     /**
-     * Set keys
+     * Set keys.
      *
      * @param array $keys
      *
@@ -30,7 +27,7 @@ class Filter
     }
 
     /**
-     * Get keys
+     * Get keys.
      *
      * @return array
      */
@@ -40,10 +37,10 @@ class Filter
     }
 
     /**
-     * Filter query with where
+     * Filter query with where.
      *
      * @param \Illuminate\Database\Query\Builder $query
-     * @param string $filter
+     * @param string                             $filter
      *
      * @return void
      */
@@ -52,13 +49,13 @@ class Filter
         $builder = new Query\Builder($this->getKeys());
         $builder->build($query, $this->parse($filter));
     }
-    
+
     /**
-     * Convert the string query into an object (e.g.)
+     * Convert the string query into an object (e.g.).
      *
      * @param string $query (e.g.) title eq 'something'
      *
-     * @return Object
+     * @return object
      */
     public function parse($query)
     {

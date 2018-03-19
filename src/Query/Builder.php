@@ -2,13 +2,12 @@
 
 namespace Railken\Laravel\ApiHelpers\Query;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Railken\SQ\Contracts\NodeContract;
+use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
 class Builder
 {
-
     /**
      * @var string
      */
@@ -27,7 +26,7 @@ class Builder
     /**
      * Construct.
      *
-     * @var array $keys
+     * @var array
      */
     public function __construct($keys)
     {
@@ -52,12 +51,10 @@ class Builder
             new Visitors\NotNullVisitor($this),
         ];
 
-
         /*if (!in_array($key, $this->keys)) {
             throw new Exceptions\FilterUndefinedKeyException($key);
         }*/
     }
-
 
     /**
      * Set context.
@@ -86,7 +83,7 @@ class Builder
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      *
      * @return void
      */

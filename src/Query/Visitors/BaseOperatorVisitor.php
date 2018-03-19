@@ -2,22 +2,20 @@
 
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-use Illuminate\Database\Query\Builder;
-use Railken\SQ\Contracts\NodeContract;
 use Illuminate\Support\Facades\DB;
+use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
 abstract class BaseOperatorVisitor extends BaseVisitor
 {
     /**
-     * The node that will trigger the visitor
+     * The node that will trigger the visitor.
      *
      * @var string
      */
     protected $node = Nodes\Node::class;
 
     /**
-     * The string operator for the query
+     * The string operator for the query.
      *
      * @var string
      */
@@ -28,7 +26,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      */
     public function visit($query, $node, string $context)
     {

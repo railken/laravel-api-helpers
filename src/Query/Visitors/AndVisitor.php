@@ -2,18 +2,18 @@
 
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
-use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
+use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
 class AndVisitor extends LogicOperatorVisitor
 {
     /**
-     * Visit the node and update the query
+     * Visit the node and update the query.
      *
      * @param \Illuminate\Database\Query\Builder $builder
      * @param \Railken\SQ\Contracts\NodeContract $node
-     * @param string $context
+     * @param string                             $context
      */
     public function visit(Builder $query, NodeContract $node, string $context)
     {
@@ -23,7 +23,7 @@ class AndVisitor extends LogicOperatorVisitor
                     $this->getBuilder()->build($q, $child, Nodes\AndNode::class);
                 }
             };
-            
+
             $context === Nodes\OrNode::class && $query->orWhere($callback);
             $context === Nodes\AndNode::class && $query->where($callback);
         }
