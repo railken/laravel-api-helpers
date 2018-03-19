@@ -9,7 +9,6 @@ use Railken\SQ\Contracts\NodeContract;
 
 class BaseOperatorVisitor extends BaseVisitor
 {
-
 	/**
 	 * Visit the node and update the query
 	 *
@@ -25,11 +24,11 @@ class BaseOperatorVisitor extends BaseVisitor
 	        $sql = [];
 
 	        if ($node->getChildByIndex(0) instanceof Nodes\KeyNode) {
-	            $sql[] = $node->getChildByIndex(0)->getValue();
+	            $sql[] = $this->parseKey($node->getChildByIndex(0)->getValue());
 	        }
 
 	        if ($node->getChildByIndex(0) instanceof Nodes\ValueNode) {
-	            $bindings['p0'] = $node->getChildByIndex(0)->getValue();
+	            $bindings['p0'] = $this->parseValue($node->getChildByIndex(0)->getValue());
 	            $sql[] = ':p0';
 	        }
 
@@ -38,13 +37,14 @@ class BaseOperatorVisitor extends BaseVisitor
 
 
 	        if ($node->getChildByIndex(1) instanceof Nodes\KeyNode) {
-	            $sql[] = $node->getChildByIndex(1)->getValue();
+	            $sql[] = $this->parseKey($node->getChildByIndex(1)->getValue());
 	        }
 
 	        if ($node->getChildByIndex(1) instanceof Nodes\ValueNode) {
-	            $bindings['p1'] = $node->getChildByIndex(1)->getValue();
+	            $bindings['p1'] = $this->parseValue($node->getChildByIndex(1)->getValue());
 	            $sql[] = ':p1';
 	        }
+
 	        $context === Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
 	        $context === Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
 
