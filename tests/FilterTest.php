@@ -149,6 +149,11 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` is null', $this->newQuery('x is null')->toSql());
     }
 
+    public function testFilterNotNull()
+    {
+        $this->assertEquals('select * from `foo` where `x` is not null', $this->newQuery('x is not null')->toSql());
+    }
+
     public function testBasic()
     {   
         $this->assertEquals(Sorter::class, get_class(new Sorter()));

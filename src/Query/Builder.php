@@ -37,6 +37,7 @@ class Builder
             new Visitors\NotInVisitor($this),
             new Visitors\InVisitor($this),
             new Visitors\NullVisitor($this),
+            new Visitors\NotNullVisitor($this),
         ];
 
 
