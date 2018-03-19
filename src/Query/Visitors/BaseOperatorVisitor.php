@@ -16,7 +16,7 @@ class BaseOperatorVisitor extends BaseVisitor
 	 * @param \Illuminate\Database\Query\Builder $builder
 	 * @param \Railken\SQ\Contracts\NodeContract $node
 	 */
-	public function visit($query, $node)
+	public function visit($query, $node, string $context)
 	{	
 
         if ($node instanceof $this->node) {
@@ -45,8 +45,8 @@ class BaseOperatorVisitor extends BaseVisitor
 	            $bindings['p1'] = $node->getChildByIndex(1)->getValue();
 	            $sql[] = ':p1';
 	        }
-	        $this->getBuilder()->getContext() == Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
-	        $this->getBuilder()->getContext() == Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
+	        $context === Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
+	        $context === Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
 
     	}
 	}

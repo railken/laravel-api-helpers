@@ -16,21 +16,19 @@ class AndVisitor extends LogicOperatorVisitor
 	 * @param \Illuminate\Database\Query\Builder $builder
 	 * @param \Railken\SQ\Contracts\NodeContract $node
 	 */
-	public function visit(Builder $query, NodeContract $node)
+	public function visit(Builder $query, NodeContract $node, string $context)
 	{	
 
         if ($node instanceof Nodes\AndNode) {
 
         	$callback = function($q) use ($node) {
 				foreach ($node->getChilds() as $child) {
-					print_r($child->toArray());
-					$this->getBuilder()->setContext(Nodes\AndNode::class);
-					$this->getBuilder()->build($q, $child);
+					$this->getBuilder()->build($q, $child, Nodes\AndNode::class);
 				}
 			};
 			
-        	$this->getBuilder()->getContext() == Nodes\OrNode::class && $query->orWhere($callback);
-        	$this->getBuilder()->getContext() == Nodes\AndNode::class && $query->where($callback);
+        	$context == Nodes\OrNode::class && $query->orWhere($callback);
+        	$context == Nodes\AndNode::class && $query->where($callback);
 
     	}
 	}
