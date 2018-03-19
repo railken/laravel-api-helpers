@@ -18,14 +18,4 @@ class BaseVisitor
 	{
 		return $this->builder;
 	}
-
-	public function parseKey($key)
-	{
-		return $key;
-	}
-
-	public function parseValue($value)
-	{
-		return $value;
-	}
 }

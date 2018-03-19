@@ -8,12 +8,12 @@ use Railken\SQ\Contracts\NodeContract;
 
 class OrVisitor extends LogicOperatorVisitor
 {	
-
 	/**
-	 * Visit the node and update the query
+	 * Visit the node and update the query.
 	 *
 	 * @param \Illuminate\Database\Query\Builder $builder
 	 * @param \Railken\SQ\Contracts\NodeContract $node
+	 * @param string $context
 	 */
 	public function visit(Builder $query, NodeContract $node, string $context)
 	{	

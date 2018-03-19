@@ -76,6 +76,7 @@ class Filter
 
         return $key;
     }
+
     /**
      * Filter query with where 
      *
@@ -86,9 +87,9 @@ class Filter
      */
     public function build($query, $filter)
     {   
-        $builder = new Query\Builder();
+        $builder = new Query\Builder($this->getKeys());
             
-            
+
         return $builder->build($query, $this->parse($filter));
     }
     
@@ -116,9 +117,9 @@ class Filter
             new Resolvers\GtResolver(),
             new Resolvers\CtResolver(),
             new Resolvers\SwResolver(),
+            new Resolvers\EwResolver(),
             new Resolvers\NotInResolver(),
             new Resolvers\InResolver(),
-            new Resolvers\EwResolver(),
             new Resolvers\NotNullResolver(),
             new Resolvers\NullResolver(),
             new Resolvers\AndResolver(),

@@ -8,17 +8,15 @@ use Railken\SQ\Contracts\NodeContract;
 
 class AndVisitor extends LogicOperatorVisitor
 {
-
-
 	/**
 	 * Visit the node and update the query
 	 *
 	 * @param \Illuminate\Database\Query\Builder $builder
 	 * @param \Railken\SQ\Contracts\NodeContract $node
+	 * @param string $context
 	 */
 	public function visit(Builder $query, NodeContract $node, string $context)
 	{	
-
         if ($node instanceof Nodes\AndNode) {
 
         	$callback = function($q) use ($node) {
@@ -27,8 +25,8 @@ class AndVisitor extends LogicOperatorVisitor
 				}
 			};
 			
-        	$context == Nodes\OrNode::class && $query->orWhere($callback);
-        	$context == Nodes\AndNode::class && $query->where($callback);
+        	$context === Nodes\OrNode::class && $query->orWhere($callback);
+        	$context === Nodes\AndNode::class && $query->where($callback);
 
     	}
 	}

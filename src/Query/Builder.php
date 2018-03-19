@@ -3,22 +3,20 @@
 namespace Railken\Laravel\ApiHelpers\Query;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Railken\SQ\Contracts\NodeContract;
 
 class Builder
 {
 
+	/**
+	 * @var string
+	 */
 	protected $context;
 
-	public function setContext($context)
-	{
-		$this->context = $context;
-	}
-
-	public function getContext()
-	{
-		return $this->context;
-	}
-
+	/**
+	 * Construct.
+	 */
 	public function __construct()
 	{
 
@@ -44,7 +42,39 @@ class Builder
         }*/
 	}
 
-	public function build($query, $node, $context = Nodes\AndNode::class)
+
+	/**
+	 * Set context.
+	 *
+	 * @param string $context
+	 *
+	 * @return $this
+	 */
+	public function setContext($context)
+	{
+		$this->context = $context;
+	}
+
+	/**
+	 * Get context.
+	 *
+	 * @return string
+	 */
+	public function getContext()
+	{
+		return $this->context;
+	}
+
+	/**
+	 * Build the query.
+	 *
+	 * @param \Illuminate\Database\Query\Builder $builder
+	 * @param \Railken\SQ\Contracts\NodeContract $node
+	 * @param string $context
+	 *
+	 * @return void
+	 */
+	public function build(QueryBuilder $query, NodeContract $node, $context = Nodes\AndNode::class)
 	{
         foreach ($this->visitors as $visitor) {
             $visitor->visit($query, $node, $context);

@@ -6,14 +6,14 @@ use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
 
-
 class BaseOperatorVisitor extends BaseVisitor
 {
 	/**
-	 * Visit the node and update the query
+	 * Visit the node and update the query.
 	 *
 	 * @param \Illuminate\Database\Query\Builder $builder
 	 * @param \Railken\SQ\Contracts\NodeContract $node
+	 * @param string $context
 	 */
 	public function visit($query, $node, string $context)
 	{	
@@ -49,5 +49,29 @@ class BaseOperatorVisitor extends BaseVisitor
 	        $context === Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
 
     	}
+	}
+
+	/**
+	 * Parse key.
+	 *
+	 * @param string $key
+	 *
+	 * @return string
+	 */
+	public function parseKey($key)
+	{
+		return '`'.$key.'`';
+	}
+
+	/**
+	 * Parse value.
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	public function parseValue($value)
+	{
+		return $value;
 	}
 }
