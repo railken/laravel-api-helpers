@@ -3,12 +3,15 @@
 namespace Railken\Laravel\ApiHelpers\Visitors;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
+use Illuminate\Database\Query\Builder;
+use Railken\SQ\Contracts\NodeContract;
 
 class LogicOperatorVisitor
 {
 
-	public function __construct($callback)
+	public function __construct($context, $callback)
 	{
+		$this->context = $context;
 		$this->_callback = $callback;
 	}
 
@@ -16,16 +19,5 @@ class LogicOperatorVisitor
 	{
 		$c = $this->_callback;
 		return $c($query, $node);
-	}
-
-	public function visit($query, $node)
-	{	
-        if ($node instanceof Nodes\AndNode) {
-			foreach ($node->getChilds() as $child) {
-				$query->where(function($q) {
-					$this->callback($q, $child);
-				});
-			}
-    	}
 	}
 }

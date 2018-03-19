@@ -6,8 +6,9 @@ use Railken\ApiHelpers\Filter as BaseFilter;
 use Illuminate\Support\Facades\DB;
 use Railken\SQ\QueryParser;
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
+use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 
-class Filter extends BaseFilter
+class Filter
 {   
 
     /**
@@ -137,13 +138,16 @@ class Filter extends BaseFilter
      *
      * @return void
      */
-    public function buildQuery($query, $node)
+    public function buildQuery($query, $node, $context = Nodes\AndNode::class)
     {
         $visitors = [
-            new Visitors\EqVisitor(),
-            new Visitors\NotEqVisitor(),
-            new Visitors\LogicOperatorVisitor(function($query, $node) {
-                return $this->buildQuery($query, $node);
+            new Visitors\EqVisitor($context),
+            new Visitors\NotEqVisitor($context),
+            new Visitors\AndVisitor($context, function($query, $node) {
+                return $this->buildQuery($query, $node, Nodes\AndNode::class);
+            }),
+            new Visitors\OrVisitor($context, function($query, $node) {
+                return $this->buildQuery($query, $node, Nodes\OrNode::class);
             }),
         ];
 
@@ -152,40 +156,9 @@ class Filter extends BaseFilter
             $visitor->visit($query, $node);
         }
 
-        /*
-        if (is_array($node)) {
-            foreach($node as $expression)
-                $this->buildQuery($query, $expression, $last_logic_operator);
-
-            return;
-        }   
-
-        $operator = $node->getOperator();
-
-
-        $sub_where = ((object)['and' => 'where', 'or' => 'orWhere'])->$last_logic_operator;
-
-
-        $operator == "or"           && $query->{"{$sub_where}"}(function($sub_query) use ($node) {
-            $this->buildQuery($sub_query, $node->getChilds(), "or");
-        });
-
-        $operator == "and"          && $query->{"{$sub_where}"}(function($sub_query) use ($node) {
-             $this->buildQuery($sub_query, $node->getChilds(), "and");
-        });
-
-        if ($operator === 'or' || $operator === 'and')
-            return;
-
-
-        $key = $node->getKey() ? $node->getKey() : null;
-        $values = $node->getValue();
-
-        if (!in_array($key, $this->keys)) {
+        /*if (!in_array($key, $this->keys)) {
             throw new Exceptions\FilterUndefinedKeyException($key);
-        }
+        }*/
         
-        $key = $this->parseKey($key);
-        */
     }
 }

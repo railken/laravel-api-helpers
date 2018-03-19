@@ -3,10 +3,24 @@
 namespace Railken\Laravel\ApiHelpers\Visitors;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
+use Illuminate\Database\Query\Builder;
+use Railken\SQ\Contracts\NodeContract;
+
 
 class BaseOperatorVisitor
 {
 
+	public function __construct($context)
+	{
+		$this->context = $context;
+	}
+
+	/**
+	 * Visit the node and update the query
+	 *
+	 * @param \Illuminate\Database\Query\Builder $builder
+	 * @param \Railken\SQ\Contracts\NodeContract $node
+	 */
 	public function visit($query, $node)
 	{	
 
@@ -35,8 +49,9 @@ class BaseOperatorVisitor
 	            $bindings['p1'] = $node->getChildByIndex(1)->getValue();
 	            $sql[] = ':p1';
 	        }
+	        $this->context == Nodes\OrNode::class && $query->orWhereRaw(implode(" ", $sql), $bindings);
+	        $this->context == Nodes\AndNode::class && $query->whereRaw(implode(" ", $sql), $bindings);
 
-	        $query->whereRaw(implode(" ", $sql), $bindings);
     	}
 	}
 }

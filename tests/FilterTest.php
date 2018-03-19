@@ -66,8 +66,8 @@ class FilterTest extends \Orchestra\Testbench\TestCase
 
 	public function testFilterEq()
 	{
-        $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x eq 1')->toSql());
-        $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x = 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` = :p0', $this->newQuery('x eq 1')->toSql());
+        $this->assertEquals('select * from `foo` where `x` = :p0', $this->newQuery('x = 1')->toSql());
 	}
 
     public function testFilterGt()
