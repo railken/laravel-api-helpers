@@ -1,5 +1,7 @@
 <?php
 
+namespace Railken\Laravel\ApiHelpers\Tests;
+
 use PHPUnit\Framework\TestCase;
 use Railken\Laravel\ApiHelpers\Filter;
 use Railken\Laravel\ApiHelpers\Sorter;
@@ -42,7 +44,7 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      *
      * @param string $str_filter
      *
-     * @return QueryBuilder
+     * @return \Illuminate\Database\Query\Builder
      */
     public function newQuery($str_filter)
     {

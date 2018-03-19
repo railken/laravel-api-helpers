@@ -3,17 +3,31 @@
 namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
-use Illuminate\Database\Query\Builder;
-use Railken\SQ\Contracts\NodeContract;
+use Railken\Laravel\ApiHelpers\Query\Builder;
 
 class BaseVisitor
 {	
 
-	public function __construct($builder)
+	/**
+	 * @var Railken\Laravel\ApiHelpers\Query\Builder
+	 */
+	protected $builder;
+
+	/**
+	 * Construct.
+	 *
+	 * @param \Railken\Laravel\ApiHelpers\Query\Builder $builder
+	 */
+	public function __construct(Builder $builder)
 	{
 		$this->builder = $builder;
 	}
 
+	/**
+	 * Get builder.
+	 *
+	 * @return Railken\Laravel\ApiHelpers\Query\Builder
+	 */
 	public function getBuilder()
 	{
 		return $this->builder;
