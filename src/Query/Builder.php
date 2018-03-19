@@ -29,6 +29,7 @@ class Builder
             new Visitors\NotEqVisitor($this),
             new Visitors\GtVisitor($this),
             new Visitors\GteVisitor($this),
+            new Visitors\LtVisitor($this),
             new Visitors\CtVisitor($this),
             new Visitors\SwVisitor($this),
             new Visitors\EwVisitor($this),
