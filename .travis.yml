@@ -1,0 +1,75 @@
+language: php
+
+sudo: false
+
+services:
+  - mysql
+
+addons:
+  apt:
+    packages:
+      - libxml2-utils
+  code_climate:
+    repo_token:
+      secure: "q2e593D7vn3p0z/pWy/FSDuonBt3dN9EyHAvmQxm3ZA7urbv9ZxWFZgrtnvGtsB5qzBOi1yQLWK/8RV16yWZJtn3QQCPpmM758bzLAKHt1ByZYlTEc2febFuJt3kFVrJa94JiL47LMeiFbeXfZAxwFJ2I77IJP0jC7vVuid0OoaaKUNFLSPIq4tLZXe1p6vnNfNCl9jrzY51r46N/N6Yg8jpVhw53DrugJOC0bogFsqdUWvaEjqbFq1/0wu4tzXMijw836Mu9u6t/Cc0MNW1Yvu7ZtDFy9YfvtEAM91YHpXg+t4bjx5gnZiwnkeEyGM/sHRXMuAjZvtXBD6XnqcqX/PVLApqx20TEG0ZvevC7GO1/yY1gpZmUuIZnI4+7oscgrx7wtlJH664x10n5NtvAcl2D4XDWixtu5Ilf/KZwaMgqnabzm1g8b0E5DcX2DQbxRo3gB+YTIoikKCZ+eB2Udg074HDIQytaqu8v/Lf8yyNhyYKru4PQUrL+cClbA9ACuT00JSqZYdgdIGj/0EUU031FvA+q6T0+xdXn/rYpZOWoVbLm9/Vz4qG9L4AAFKdeYjd6E3K2bFGugHoNZv3jfCxRVzsM56LN3S2jtacWSKwcwqcKoIlGddmkq32nnuvMikdtwafKLNHM0JP03dMuDvYJoihnNSaim4Mu5cZp6A="
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+matrix:
+  allow_failures:
+    - php: master
+  fast_finish: true
+
+env:
+  matrix:
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
+  global:
+    - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
+
+before_install:
+  - composer clear-cache
+
+install:
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
+
+before_script:
+  - mysql -h localhost -e "CREATE DATABASE homestead;"
+  - mysql -h localhost -e "GRANT USAGE ON *.* TO homestead@localhost IDENTIFIED BY 'secret';"
+  - mysql -h localhost -e "GRANT ALL PRIVILEGES ON homestead.* TO homestead@localhost;"
+  - mysql -h localhost -e "FLUSH PRIVILEGES;"
+  - cp .env.travis .env
+  - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+script:
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=build/logs/clover.xml
+  - ./vendor/bin/phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+  
+after_script:
+  - ./vendor/bin/test-reporter
+
+jobs:
+  include:
+    - stage: Quality
+      php: 7.2
+      env: PHPStan
+      install: travis_retry composer update --prefer-dist --prefer-stable
+      before_script:
+        - travis_retry composer update --prefer-dist --prefer-stable
+      script:
+        - ./vendor/bin/phpstan analyse --level=0 src -c phpstan.neon
+        - ./vendor/bin/phpstan analyse --level=1 tests -c phpstan.neon
+    - stage: Style
+      php: 7.2
+      env: php-cs-fixer
+      install:
+        - phpenv config-rm xdebug.ini
+        - travis_retry composer update --prefer-dist --prefer-stable
+      script:
+        - ./vendor/bin/php-cs-fixer --diff --dry-run -v fix src
+        - ./vendor/bin/php-cs-fixer --diff --dry-run -v fix tests
