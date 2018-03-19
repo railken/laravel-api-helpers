@@ -10,6 +10,6 @@ class InvalidSorterDirectionException extends Exception
     {
         $this->message = sprintf("Invalid value '%s', expected: 'asc', 'desc'", $direction);
         
-		parent::__construct();
+        parent::__construct();
     }
 }

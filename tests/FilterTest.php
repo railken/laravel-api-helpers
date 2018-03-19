@@ -8,10 +8,9 @@ use Railken\Laravel\ApiHelpers\Sorter;
 use Railken\Laravel\ApiHelpers\Paginator;
 use Railken\Laravel\ApiHelpers\Tests\Foo;
 
-
 class FilterTest extends \Orchestra\Testbench\TestCase
 {
-	  /**
+    /**
      * Define environment setup.
      *
      * @param  \Illuminate\Foundation\Application  $app
@@ -48,7 +47,6 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      */
     public function newQuery($str_filter)
     {
-
         $filter = new Filter();
         $filter->setKeys(['x']);
         $query = (new Foo)->newQuery()->getQuery();
@@ -61,10 +59,10 @@ class FilterTest extends \Orchestra\Testbench\TestCase
      */
     public function testFilterUndefindKey()
     {
-       $filter = new Filter();
-       $filter->setKeys(['x']);
-       $filter->build((new Foo)->newQuery()->getQuery(), 'y eq 1');
-    } 
+        $filter = new Filter();
+        $filter->setKeys(['x']);
+        $filter->build((new Foo)->newQuery()->getQuery(), 'y eq 1');
+    }
 
 
     public function testFilterEqColumns()
@@ -73,11 +71,11 @@ class FilterTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('select * from `foo` where `x` = `x`', $this->newQuery('x = x')->toSql());
     }
 
-	public function testFilterEq()
-	{
+    public function testFilterEq()
+    {
         $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x eq 1')->toSql());
         $this->assertEquals('select * from `foo` where `x` = ?', $this->newQuery('x = 1')->toSql());
-	}
+    }
 
     public function testFilterGt()
     {
@@ -157,7 +155,7 @@ class FilterTest extends \Orchestra\Testbench\TestCase
     }
 
     public function testBasic()
-    {   
+    {
         $this->assertEquals(Sorter::class, get_class(new Sorter()));
         $this->assertEquals(Paginator::class, get_class(new Paginator()));
     }

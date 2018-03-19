@@ -8,5 +8,4 @@ use Railken\SQ\Contracts\NodeContract;
 
 class LogicOperatorVisitor extends BaseVisitor
 {
-
 }

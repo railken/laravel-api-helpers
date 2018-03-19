@@ -6,8 +6,6 @@ use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
 use Illuminate\Database\Query\Builder;
 use Railken\SQ\Contracts\NodeContract;
 
-
 class LikeVisitor extends BaseOperatorVisitor
 {
-
 }

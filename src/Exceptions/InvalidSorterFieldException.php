@@ -10,6 +10,6 @@ class InvalidSorterFieldException extends Exception
     {
         $this->message = sprintf("Invalid field '%s'", $field);
 
-		parent::__construct();
+        parent::__construct();
     }
 }

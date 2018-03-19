@@ -32,7 +32,7 @@ class Sorter
      * Set keys
      *
      * @param array $keys
-     * 
+     *
      * @return $this
      */
     public function setKeys($keys)
@@ -49,7 +49,6 @@ class Sorter
      */
     public function add($name, $direction)
     {
-        
         if (!in_array($name, $this->keys)) {
             throw new Exceptions\InvalidSorterFieldException($name);
         }

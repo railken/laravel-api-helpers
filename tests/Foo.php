@@ -1,6 +1,7 @@
 <?php
 
 namespace Railken\Laravel\ApiHelpers\Tests;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Foo extends Model

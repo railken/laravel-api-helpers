@@ -8,7 +8,7 @@ use Railken\SQ\QueryParser;
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
 
 class Filter
-{   
+{
 
     /**
      * @var array
@@ -26,7 +26,7 @@ class Filter
     {
         $this->keys = $keys;
 
-        return $this; 
+        return $this;
     }
 
     /**
@@ -40,7 +40,7 @@ class Filter
     }
 
     /**
-     * Filter query with where 
+     * Filter query with where
      *
      * @param \Illuminate\Database\Query\Builder $query
      * @param string $filter
@@ -48,7 +48,7 @@ class Filter
      * @return void
      */
     public function build($query, $filter)
-    {   
+    {
         $builder = new Query\Builder($this->getKeys());
         $builder->build($query, $this->parse($filter));
     }
