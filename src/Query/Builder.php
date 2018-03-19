@@ -15,12 +15,25 @@ class Builder
 	protected $context;
 
 	/**
-	 * Construct.
+	 * @var array
 	 */
-	public function __construct()
+	protected $visitors;
+
+	/**
+	 * @var array
+	 */
+	protected $keys;
+
+	/**
+	 * Construct.
+	 *
+	 * @var array $keys
+	 */
+	public function __construct($keys)
 	{
 
 		$this->context = Nodes\AndNode::class;
+		$this->keys = $keys;
 
         $this->visitors = [
             new Visitors\EqVisitor($this),
