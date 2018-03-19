@@ -21,9 +21,6 @@ class BaseOperatorVisitor extends BaseVisitor
 
         if ($node instanceof $this->node) {
 
-			$bindings = [];
-	        $sql = [];
-
 	        $child0 = $node->getChildByIndex(0);
 	        $child1 = $node->getChildByIndex(1);
 
