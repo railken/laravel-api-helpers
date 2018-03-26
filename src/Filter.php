@@ -4,6 +4,7 @@ namespace Railken\Laravel\ApiHelpers;
 
 use Railken\SQ\Languages\BoomTree\Resolvers as Resolvers;
 use Railken\SQ\QueryParser;
+use Railken\Laravel\ApiHelpers\Query\Visitors as Visitors;
 
 class Filter
 {
@@ -39,25 +40,38 @@ class Filter
     /**
      * Filter query with where.
      *
-     * @param mixed $query
-     * @param string                             $filter
-     *
-     * @return void
+     * @return Query\Builder
      */
-    public function build($query, $filter)
+    public function getBuilder()
     {
         $builder = new Query\Builder($this->getKeys());
-        $builder->build($query, $this->parse($filter));
+        $builder->setVisitors([
+            new Visitors\EqVisitor($builder),
+            new Visitors\NotEqVisitor($builder),
+            new Visitors\GtVisitor($builder),
+            new Visitors\GteVisitor($builder),
+            new Visitors\LtVisitor($builder),
+            new Visitors\LteVisitor($builder),
+            new Visitors\CtVisitor($builder),
+            new Visitors\SwVisitor($builder),
+            new Visitors\EwVisitor($builder),
+            new Visitors\AndVisitor($builder),
+            new Visitors\OrVisitor($builder),
+            new Visitors\NotInVisitor($builder),
+            new Visitors\InVisitor($builder),
+            new Visitors\NullVisitor($builder),
+            new Visitors\NotNullVisitor($builder),
+        ]);
+
+        return $builder;
     }
 
     /**
      * Convert the string query into an object (e.g.).
      *
-     * @param string $query (e.g.) title eq 'something'
-     *
-     * @return object
+     * @return QueryParser
      */
-    public function parse($query)
+    public function getParser()
     {
         $parser = new QueryParser();
         $parser->addResolvers([
@@ -83,6 +97,23 @@ class Filter
             new Resolvers\OrResolver(),
         ]);
 
-        return $parser->parse($query);
+        return $parser;
+
+    }
+
+    /**
+     * Filter query with where.
+     *
+     * @param mixed $query
+     * @param string $filter
+     *
+     * @return void
+     */
+    public function build($query, $filter)
+    {
+        $parser = $this->getParser();
+        $builder = $this->getBuilder();
+
+        return $builder->build($query, $parser->parse($filter));
     }
 }

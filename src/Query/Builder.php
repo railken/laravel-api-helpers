@@ -33,27 +33,6 @@ class Builder
         $this->context = Nodes\AndNode::class;
         $this->keys = $keys;
 
-        $this->visitors = [
-            new Visitors\EqVisitor($this),
-            new Visitors\NotEqVisitor($this),
-            new Visitors\GtVisitor($this),
-            new Visitors\GteVisitor($this),
-            new Visitors\LtVisitor($this),
-            new Visitors\LteVisitor($this),
-            new Visitors\CtVisitor($this),
-            new Visitors\SwVisitor($this),
-            new Visitors\EwVisitor($this),
-            new Visitors\AndVisitor($this),
-            new Visitors\OrVisitor($this),
-            new Visitors\NotInVisitor($this),
-            new Visitors\InVisitor($this),
-            new Visitors\NullVisitor($this),
-            new Visitors\NotNullVisitor($this),
-        ];
-
-        /*if (!in_array($key, $this->keys)) {
-            throw new Exceptions\FilterUndefinedKeyException($key);
-        }*/
     }
 
     /**
@@ -66,6 +45,22 @@ class Builder
     public function setContext($context)
     {
         $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * Set visitors.
+     *
+     * @param array $visitors
+     *
+     * @return $this
+     */
+    public function setVisitors($visitors)
+    {
+        $this->visitors = $visitors;
+
+        return $this;
     }
 
     /**
