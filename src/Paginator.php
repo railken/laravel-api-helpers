@@ -11,7 +11,7 @@ class Paginator
      *
      * @param int $total
      *
-     * @return $this
+     * @return Bag
      */
     public function paginate($total, $page = 1, $take = 10)
     {

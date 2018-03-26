@@ -81,13 +81,13 @@ class Builder
     /**
      * Build the query.
      *
-     * @param \Illuminate\Database\Query\Builder $builder
+     * @param mixed $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
      *
      * @return void
      */
-    public function build(QueryBuilder $query, NodeContract $node, $context = Nodes\AndNode::class)
+    public function build($query, NodeContract $node, $context = Nodes\AndNode::class)
     {
         foreach ($this->visitors as $visitor) {
             $visitor->visit($query, $node, $context);

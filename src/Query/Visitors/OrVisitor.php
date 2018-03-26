@@ -11,11 +11,11 @@ class OrVisitor extends LogicOperatorVisitor
     /**
      * Visit the node and update the query.
      *
-     * @param \Illuminate\Database\Query\Builder $builder
+     * @param mixed $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
      */
-    public function visit(Builder $query, NodeContract $node, string $context)
+    public function visit($query, NodeContract $node, string $context)
     {
         if ($node instanceof Nodes\OrNode) {
             $callback = function ($q) use ($node) {

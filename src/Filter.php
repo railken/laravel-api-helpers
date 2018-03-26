@@ -39,7 +39,7 @@ class Filter
     /**
      * Filter query with where.
      *
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param mixed $query
      * @param string                             $filter
      *
      * @return void

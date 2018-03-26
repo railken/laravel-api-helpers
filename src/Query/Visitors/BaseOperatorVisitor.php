@@ -24,7 +24,7 @@ abstract class BaseOperatorVisitor extends BaseVisitor
     /**
      * Visit the node and update the query.
      *
-     * @param \Illuminate\Database\Query\Builder $builder
+     * @param mixed $query
      * @param \Railken\SQ\Contracts\NodeContract $node
      * @param string                             $context
      */

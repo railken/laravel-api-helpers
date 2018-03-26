@@ -31,7 +31,7 @@ class Sorter
     /**
      * Set keys.
      *
-     * @param array $keys
+     * @param Collection $keys
      *
      * @return $this
      */
