@@ -4,6 +4,7 @@ namespace Railken\Laravel\ApiHelpers\Query\Visitors;
 
 use Illuminate\Support\Facades\DB;
 use Railken\SQ\Languages\BoomTree\Nodes as Nodes;
+use Illuminate\Support\Collection;
 
 abstract class BaseOperatorVisitor extends BaseVisitor
 {
@@ -61,7 +62,11 @@ abstract class BaseOperatorVisitor extends BaseVisitor
      */
     public function parseKey($key)
     {
-        return DB::raw('`'.$key.'`');
+        $key = (new Collection(explode(".", $key)))->map(function($part) {
+            return '`'.$part.'`';
+        })->implode(".");
+
+        return DB::raw($key);
     }
 
     /**
