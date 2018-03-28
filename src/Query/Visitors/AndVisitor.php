@@ -19,6 +19,11 @@ class AndVisitor extends LogicOperatorVisitor
         if ($node instanceof Nodes\AndNode) {
             $callback = function ($q) use ($node) {
                 foreach ($node->getChilds() as $child) {
+
+                    if ($child instanceof Nodes\KeyNode || $child instanceof Nodes\ValueNode) {
+                        throw new \Railken\SQ\Exceptions\QuerySyntaxException();
+                    }
+
                     $this->getBuilder()->build($q, $child, Nodes\AndNode::class);
                 }
             };

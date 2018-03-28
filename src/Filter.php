@@ -114,6 +114,10 @@ class Filter
         $parser = $this->getParser();
         $builder = $this->getBuilder();
 
-        return $builder->build($query, $parser->parse($filter));
+        try {
+            return $builder->build($query, $parser->parse($filter));
+        } catch (\Railken\SQ\Exceptions\QuerySyntaxException $e) {
+            throw new \Railken\SQ\Exceptions\QuerySyntaxException($filter);
+        }
     }
 }
