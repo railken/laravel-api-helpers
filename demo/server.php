@@ -33,7 +33,6 @@ $query = \Illuminate\Support\Facades\DB::table('foo');
 try {
     $result = $filter->build($query, $_GET['q']);
 } catch (\Exception $e) {
-    echo $e;
     http_response_code(400);
     echo json_encode((object) ['message' => $e->getMessage()]);
     die();
